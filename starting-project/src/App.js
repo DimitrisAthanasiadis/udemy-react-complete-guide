@@ -3,9 +3,12 @@ import Post from './components/Post/Post';
 
 function App() {
   return (
-    <div className="App">
+    <main>
       <Post />
-    </div>
+      <Post />
+      <Post />
+      <Post />
+    </main>
   );
 }
 
