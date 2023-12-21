@@ -1,3 +1,7 @@
+# Purpose
+
+This React application follows the fast paced walkthrough and exercises of the course.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
