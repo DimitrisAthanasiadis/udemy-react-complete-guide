@@ -32,9 +32,11 @@ function PostList() {
         enteredBody={enteredBody}
         enteredAuthor={enteredAuthor}
       />
-      <ul className={classes.posts}>
-        <Post author={enteredAuthor} body={enteredBody} />
-      </ul>
+      {enteredAuthor || enteredBody ? (
+        <ul className={classes.posts}>
+          <Post author={enteredAuthor} body={enteredBody} />
+        </ul>
+      ) : null}
     </>
   );
 }
