@@ -4,7 +4,7 @@ import Post from "../Post/Post";
 import classes from "./PostList.module.css";
 import { useState } from "react";
 
-function PostList() {
+function PostList({ isPosting, onStopPosting }) {
   /**
    * inserted states and change handlers here because
    * the state needs to be handled as high level as possible (?)
@@ -14,7 +14,6 @@ function PostList() {
 
   const [enteredBody, setEnteredBody] = useState("");
   const [enteredAuthor, setEnteredAuthor] = useState("");
-  const [modalIsVisible, setModalIsVisible] = useState(true);
 
   function changeBodyHandler(event) {
     setEnteredBody(event.target.value);
@@ -24,16 +23,12 @@ function PostList() {
     setEnteredAuthor(event.target.value);
   }
 
-  function hideModalHandler() {
-    setModalIsVisible(false);
-  }
-
   return (
     // i can include an empty html tag. acceptable
     // for React because i need to return only ONE component.
     <>
-      {modalIsVisible && (
-        <Modal onClose={hideModalHandler} >
+      {isPosting && (
+        <Modal onClose={onStopPosting} >
           <NewPost
             onBodyChange={changeBodyHandler}
             onAuthorChange={changeAuthorHandler}
