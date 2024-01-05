@@ -1,3 +1,4 @@
+import Modal from "../Modal/Modal";
 import NewPost from "../NewPost/NewPost";
 import Post from "../Post/Post";
 import classes from "./PostList.module.css";
@@ -26,12 +27,14 @@ function PostList() {
     // i can include an empty html tag. acceptable
     // for React because i need to return only ONE component.
     <>
-      <NewPost
-        onBodyChange={changeBodyHandler}
-        onAuthorChange={changeAuthorHandler}
-        enteredBody={enteredBody}
-        enteredAuthor={enteredAuthor}
-      />
+      <Modal>
+        <NewPost
+          onBodyChange={changeBodyHandler}
+          onAuthorChange={changeAuthorHandler}
+          enteredBody={enteredBody}
+          enteredAuthor={enteredAuthor}
+        />
+      </Modal>
       {enteredAuthor || enteredBody ? (
         <ul className={classes.posts}>
           <Post author={enteredAuthor} body={enteredBody} />
