@@ -5,15 +5,16 @@ import classes from "./PostList.module.css";
 import { useState } from "react";
 
 function PostList() {
-    /**
-     * inserted states and change handlers here because
-     * the state needs to be handled as high level as possible (?)
-     * so that it can be passed to lower level components that might
-     * need it.
-     */
+  /**
+   * inserted states and change handlers here because
+   * the state needs to be handled as high level as possible (?)
+   * so that it can be passed to lower level components that might
+   * need it.
+   */
 
   const [enteredBody, setEnteredBody] = useState("");
   const [enteredAuthor, setEnteredAuthor] = useState("");
+  const [modalIsVisible, setModalIsVisible] = useState(true);
 
   function changeBodyHandler(event) {
     setEnteredBody(event.target.value);
@@ -23,18 +24,25 @@ function PostList() {
     setEnteredAuthor(event.target.value);
   }
 
+  function hideModalHandler() {
+    setModalIsVisible(false);
+  }
+
   return (
     // i can include an empty html tag. acceptable
     // for React because i need to return only ONE component.
     <>
-      <Modal>
-        <NewPost
-          onBodyChange={changeBodyHandler}
-          onAuthorChange={changeAuthorHandler}
-          enteredBody={enteredBody}
-          enteredAuthor={enteredAuthor}
-        />
-      </Modal>
+      {modalIsVisible && (
+        <Modal onClose={hideModalHandler} >
+          <NewPost
+            onBodyChange={changeBodyHandler}
+            onAuthorChange={changeAuthorHandler}
+            enteredBody={enteredBody}
+            enteredAuthor={enteredAuthor}
+          />
+        </Modal>
+      )}
+      
       {enteredAuthor || enteredBody ? (
         <ul className={classes.posts}>
           <Post author={enteredAuthor} body={enteredBody} />
