@@ -12,15 +12,15 @@ function PostList({ isPosting, onStopPosting }) {
    * need it.
    */
 
-  const [enteredBody, setEnteredBody] = useState("");
-  const [enteredAuthor, setEnteredAuthor] = useState("");
+  const [posts, setPosts] = useState([]);
 
-  function changeBodyHandler(event) {
-    setEnteredBody(event.target.value);
-  }
-
-  function changeAuthorHandler(event) {
-    setEnteredAuthor(event.target.value);
+  function addPostHandler(postData) {
+    /*
+      whenever the new state is based on a previous state,
+      we must pass a function (like an arrow function)
+      to setPosts(). this is a general rule in React.
+    */
+    setPosts((existingPosts) => [postData, ...existingPosts]);
   }
 
   return (
@@ -28,21 +28,25 @@ function PostList({ isPosting, onStopPosting }) {
     // for React because i need to return only ONE component.
     <>
       {isPosting && (
-        <Modal onClose={onStopPosting} >
-          <NewPost
-            onBodyChange={changeBodyHandler}
-            onAuthorChange={changeAuthorHandler}
-            enteredBody={enteredBody}
-            enteredAuthor={enteredAuthor}
-          />
+        <Modal onClose={onStopPosting}>
+          <NewPost onCancel={onStopPosting} onAddPost={addPostHandler} />
         </Modal>
       )}
-      
-      {enteredAuthor || enteredBody ? (
+
+      {posts.length > 0 && (
         <ul className={classes.posts}>
-          <Post author={enteredAuthor} body={enteredBody} />
+          {posts.map((post) => (
+            <Post key={post.body} author={post.author} body={post.body} />
+          ))}
         </ul>
-      ) : null}
+      )}
+
+      {posts.length == 0 && (
+        <div style={{ textAlign: "center", color: "white" }}>
+          <h2>There are no posts yet</h2>
+          <p>Start adding some</p>
+        </div>
+      )}
     </>
   );
 }
