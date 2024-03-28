@@ -2,7 +2,7 @@ import Modal from "../Modal/Modal";
 import NewPost from "../NewPost/NewPost";
 import Post from "../Post/Post";
 import classes from "./PostList.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function PostList({ isPosting, onStopPosting }) {
   /**
@@ -13,6 +13,15 @@ function PostList({ isPosting, onStopPosting }) {
    */
 
   const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    async function fetchPosts() {
+      const response = await fetch("http://localhost:8080/posts");
+      const resData = await response.json();
+      setPosts(resData.posts);
+    }
+
+    fetchPosts();
+  }, []);
 
   function addPostHandler(postData) {
     /*
