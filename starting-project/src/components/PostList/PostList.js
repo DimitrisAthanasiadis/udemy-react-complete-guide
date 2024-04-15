@@ -14,14 +14,26 @@ function PostList({ isPosting, onStopPosting }) {
 
   const [posts, setPosts] = useState([]);
   const [isFetching, setFetching] = useState(false);
+  const [isResponseOk, setIsResponseOk] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     async function fetchPosts() {
       setFetching(true);
-      const response = await fetch("http://localhost:8080/posts");
-      const resData = await response.json();
-      setPosts(resData.posts);
-      setFetching(false);
+      try {
+        const response = await fetch("http://localhost:8080/posts");
+        if (!response.ok) {
+          setIsResponseOk(false);
+        }
+        const resData = await response.json();
+        setPosts(resData.posts);
+        setFetching(false);
+        setIsResponseOk(true);
+      } catch (error) {
+        setIsResponseOk(false);
+        setFetching(false);
+        setErrorMessage(error.message);
+      }
     }
 
     fetchPosts();
@@ -48,6 +60,13 @@ function PostList({ isPosting, onStopPosting }) {
     // i can include an empty html tag. acceptable
     // for React because i need to return only ONE component.
     <>
+      {!isResponseOk && (
+        <div style={{ textAlign: "center", color: "red" }}>
+          <p>There was an error when fetching posts</p>
+          <p>{errorMessage}</p>
+        </div>
+      )}
+
       {isPosting && (
         <Modal onClose={onStopPosting}>
           <NewPost onCancel={onStopPosting} onAddPost={addPostHandler} />
@@ -62,12 +81,13 @@ function PostList({ isPosting, onStopPosting }) {
         </ul>
       )}
 
-      {!isFetching && posts.length === 0 && (
+      {!isFetching && isResponseOk && posts.length === 0 && (
         <div style={{ textAlign: "center", color: "white" }}>
           <h2>There are no posts yet</h2>
           <p>Start adding some</p>
         </div>
       )}
+
       {isFetching && (
         <div style={{ textAlign: "center", color: "white" }}>
           <p>Loading posts...</p>
