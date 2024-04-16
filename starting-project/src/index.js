@@ -6,6 +6,9 @@ import reportWebVitals from "./reportWebVitals";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import NewPost, { action as newPostAction } from "./routes/NewPost/NewPost";
 import RootLayout from "./routes/RootLayout/RootLayout";
+import PostDetails, {
+  loader as postDetailsLoader,
+} from "./routes/PostDetails/PostDetails";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 // children property is used in the router elements so that the
@@ -22,6 +25,11 @@ const router = createBrowserRouter([
         loader: postsLoader,
         children: [
           { path: "/create-post", element: <NewPost />, action: newPostAction }, // action is caught by react router and used to handle the submit action
+          {
+            path: "/:id",
+            element: <PostDetails />,
+            loader: postDetailsLoader,
+          },
         ],
       },
     ],
