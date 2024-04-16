@@ -4,12 +4,12 @@ import "./index.css";
 import Posts, { loader as postsLoader } from "./routes/Posts/Posts";
 import reportWebVitals from "./reportWebVitals";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import NewPost from "./routes/NewPost/NewPost";
+import NewPost, { action as newPostAction } from "./routes/NewPost/NewPost";
 import RootLayout from "./routes/RootLayout/RootLayout";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 // children property is used in the router elements so that the
-// children can be rendered under their parent. i also need an 
+// children can be rendered under their parent. i also need an
 // Outlet element to wrapt the children.
 const router = createBrowserRouter([
   {
@@ -20,7 +20,9 @@ const router = createBrowserRouter([
         path: "/",
         element: <Posts />,
         loader: postsLoader,
-        children: [{ path: "/create-post", element: <NewPost /> }],
+        children: [
+          { path: "/create-post", element: <NewPost />, action: newPostAction }, // action is caught by react router and used to handle the submit action
+        ],
       },
     ],
   },
